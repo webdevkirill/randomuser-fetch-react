@@ -1,9 +1,7 @@
-import { SET_USERS_COUNT } from './types';
-import { SET_USERS } from './types';
+import { SET_USERS, SET_USERS_WITH_COUNT } from './types';
 
 const defaulState = {
 	users: [],
-	featuredUsers: [],
 	usersCount: null,
 };
 
@@ -13,9 +11,9 @@ const handlers = {
 		users: payload,
 		featuredUsers: payload,
 	}),
-	SET_USERS_COUNT: (state, { payload }) => ({
+	SET_USERS_WITH_COUNT: (state, { payload }) => ({
 		...state,
-		usersCount: payload,
+		...payload,
 	}),
 	default: (state, action) => state,
 };
@@ -25,12 +23,12 @@ export const usersReducer = (state = defaulState, action) => {
 	return handler(state, action);
 };
 
+export const setUsersWithCount = (users, usersCount) => ({
+	type: SET_USERS_WITH_COUNT,
+	payload: { users, usersCount },
+});
+
 export const setUsers = (users) => ({
 	type: SET_USERS,
 	payload: users,
-});
-
-export const setUsersCount = (count) => ({
-	type: SET_USERS_COUNT,
-	payload: count,
 });

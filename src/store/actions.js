@@ -1,7 +1,7 @@
-import { setUsers, setUsersCount } from './usersReducer';
+import { setUsers, setUsersWithCount } from './usersReducer';
 
 const filterUsers = (users) =>
-	users.map(({ email, name, gender, picture, location, dob, cell }) => ({
+	users.map(({ email, name, gender, picture, location, dob, cell }, idx) => ({
 		email,
 		name: `${name.title} ${name.first} ${name.last}`,
 		gender,
@@ -9,6 +9,7 @@ const filterUsers = (users) =>
 		location,
 		age: dob.age,
 		id: cell,
+		index: idx,
 	}));
 
 export const fetchUsers = (count) => {
@@ -23,19 +24,26 @@ export const fetchUsers = (count) => {
 					throw err;
 				});
 
-			dispatch(setUsers(users));
+			dispatch(setUsersWithCount(users, count));
 		} catch (err) {
 			console.error(err);
 		}
 	};
 };
 
-export const init = (dispatch) => {
-	const localStorageUsersCount = +localStorage.getItem('usersCount');
-	if (localStorageUsersCount && localStorageUsersCount > 0) {
-		dispatch(setUsersCount(localStorageUsersCount));
-		dispatch(fetchUsers(localStorageUsersCount));
-	}
+export const init = () => {
+	return (dispatch) => {
+		const localStorageUsersCount = +localStorage.getItem('usersCount');
+		if (localStorageUsersCount && localStorageUsersCount > 0) {
+			dispatch(fetchUsers(localStorageUsersCount));
+		}
+	};
 };
 
-export const deleteUser = (id, users, featuredUsers) => {};
+export const deleteUser = (id, { users, usersCount }) => {
+	return (dispatch) => {
+		users = users.filter((user) => user.id !== id);
+		usersCount = usersCount - 1;
+		dispatch(setUsersWithCount(users, usersCount));
+	};
+};

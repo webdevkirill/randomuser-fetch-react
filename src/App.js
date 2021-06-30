@@ -5,7 +5,7 @@ import { init } from './store/actions';
 function App() {
 	const dispatch = useDispatch();
 	useEffect(() => {
-		init(dispatch);
+		dispatch(init());
 	}, [dispatch]);
 
 	const state = useSelector((state) => state);
