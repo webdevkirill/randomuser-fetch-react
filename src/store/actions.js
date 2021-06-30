@@ -18,3 +18,10 @@ export const fetchUsers = (count) => {
 		}
 	};
 };
+
+export const init = (dispatch) => {
+	const localStorageUsersCount = localStorage.getItem('usersCount');
+	if (localStorageUsersCount && localStorageUsersCount > 0) {
+		dispatch(fetchUsers(localStorageUsersCount));
+	}
+};
