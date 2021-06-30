@@ -1,5 +1,16 @@
 import { setUsers } from './usersReducer';
 
+const filteredUsers = (users) =>
+	users.map(({ email, name, gender, picture, location, dob, cell }) => ({
+		email,
+		name: `${name.title} ${name.first} ${name.last}`,
+		gender,
+		img: picture.medium,
+		location,
+		age: dob.age,
+		id: cell,
+	}));
+
 export const fetchUsers = (count) => {
 	return async (dispatch) => {
 		try {
@@ -7,7 +18,7 @@ export const fetchUsers = (count) => {
 				`https://api.randomuser.me/?results=${count}`
 			)
 				.then((res) => res.json())
-				.then((data) => data.results)
+				.then((data) => filteredUsers(data.results))
 				.catch((err) => {
 					throw err;
 				});
