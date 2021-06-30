@@ -25,6 +25,7 @@ export const fetchUsers = (count) => {
 				});
 
 			dispatch(setUsersWithCount(users, count));
+			localStorage.setItem('usersCount', count);
 		} catch (err) {
 			console.error(err);
 		}
@@ -42,7 +43,7 @@ export const init = () => {
 
 export const deleteUser = (id, { users, usersCount }) => {
 	return (dispatch) => {
-		users = users.filter((user) => user.id !== id);
+		users = users.filter((user) => user.index !== id);
 		usersCount = usersCount - 1;
 		dispatch(setUsersWithCount(users, usersCount));
 	};
