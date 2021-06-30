@@ -8,8 +8,8 @@ function App() {
 		init(dispatch);
 	}, [dispatch]);
 
-	const users = useSelector((state) => state.users.users);
-	console.log(users);
+	const state = useSelector((state) => state);
+	console.log(state);
 
 	return <div className='App'></div>;
 }

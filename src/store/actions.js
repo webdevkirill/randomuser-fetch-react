@@ -1,6 +1,6 @@
-import { setUsers } from './usersReducer';
+import { setUsers, setUsersCount } from './usersReducer';
 
-const filteredUsers = (users) =>
+const filterUsers = (users) =>
 	users.map(({ email, name, gender, picture, location, dob, cell }) => ({
 		email,
 		name: `${name.title} ${name.first} ${name.last}`,
@@ -18,7 +18,7 @@ export const fetchUsers = (count) => {
 				`https://api.randomuser.me/?results=${count}`
 			)
 				.then((res) => res.json())
-				.then((data) => filteredUsers(data.results))
+				.then((data) => filterUsers(data.results))
 				.catch((err) => {
 					throw err;
 				});
@@ -31,8 +31,11 @@ export const fetchUsers = (count) => {
 };
 
 export const init = (dispatch) => {
-	const localStorageUsersCount = localStorage.getItem('usersCount');
+	const localStorageUsersCount = +localStorage.getItem('usersCount');
 	if (localStorageUsersCount && localStorageUsersCount > 0) {
+		dispatch(setUsersCount(localStorageUsersCount));
 		dispatch(fetchUsers(localStorageUsersCount));
 	}
 };
+
+export const deleteUser = (id, users, featuredUsers) => {};
