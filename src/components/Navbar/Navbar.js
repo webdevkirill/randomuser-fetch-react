@@ -2,6 +2,8 @@ import { Box, Button, Grid, makeStyles, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../../store/actions';
+import FilterModal from '../Modals/FilterModal';
+import { setFilters } from '../../store/usersReducer';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -15,10 +17,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
 	const classes = useStyles();
-	const usersStateCount = useSelector((state) => state.users.usersCount);
+	const { users, usersCount: usersStateCount } = useSelector(
+		(state) => state.users
+	);
+
 	const [usersCount, setUsersCount] = useState('');
 	const [isCountError, setIsCountError] = useState('');
 	const dispatch = useDispatch();
+
+	const [filterModalOpen, setFilterModalOpen] = useState(false);
 
 	useEffect(() => {
 		usersStateCount && setUsersCount(usersStateCount);
@@ -33,49 +40,67 @@ export default function Navbar() {
 		}
 	};
 
+	const modalCloseHandler = (filters) => {
+		console.log(filters);
+		filters && dispatch(setFilters(filters));
+		setFilterModalOpen(false);
+	};
+
 	return (
-		<div className={classes.root}>
-			<Grid
-				container
-				direction='column'
-				justify='center'
-				alignItems='flex-start'
-			>
-				<Box component='h1' color='primary.main'>
-					Загрузить пользователей
-				</Box>
+		<>
+			<FilterModal
+				open={filterModalOpen}
+				onClose={(filters) => modalCloseHandler(filters)}
+				users={users}
+			/>
+			<div className={classes.root}>
 				<Grid
 					container
-					direction='row'
-					justify='flex-start'
-					alignItems='center'
+					direction='column'
+					justify='center'
+					alignItems='flex-start'
 				>
-					<Box component='span' p={1}>
-						<TextField
-							error={isCountError ? true : false}
-							label='Количество'
-							color='primary'
-							type='number'
-							size='small'
-							value={usersCount}
-							onChange={(e) => setUsersCount(e.target.value)}
-							helperText={isCountError}
-						/>
+					<Box component='h1' color='primary.main'>
+						Загрузить пользователей
 					</Box>
-					<Box component='span' p={1}>
-						<Button
-							variant='contained'
-							color='primary'
-							onClick={fetchUsersButtonClickHandler}
-						>
-							Загрузить
-						</Button>
-					</Box>
-					<Box component='span' p={1}>
-						<Button color='secondary'>Фильтры</Button>
-					</Box>
+					<Grid
+						container
+						direction='row'
+						justify='flex-start'
+						alignItems='center'
+					>
+						<Box component='span' p={1}>
+							<TextField
+								error={isCountError ? true : false}
+								label='Количество'
+								color='primary'
+								type='number'
+								size='small'
+								value={usersCount}
+								onChange={(e) => setUsersCount(e.target.value)}
+								helperText={isCountError}
+							/>
+						</Box>
+						<Box component='span' p={1}>
+							<Button
+								variant='contained'
+								color='primary'
+								onClick={fetchUsersButtonClickHandler}
+							>
+								Загрузить
+							</Button>
+						</Box>
+						<Box component='span' p={1}>
+							<Button
+								color='secondary'
+								onClick={() => setFilterModalOpen(true)}
+							>
+								Фильтры
+							</Button>
+						</Box>
+					</Grid>
 				</Grid>
-			</Grid>
-		</div>
+			</div>
+		</>
 	);
 }

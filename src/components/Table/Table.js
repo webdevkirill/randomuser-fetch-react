@@ -32,6 +32,7 @@ export default function Table() {
 			countOnPage={5}
 			deleteUserHandler={(id) => dispatch(deleteUser(id, usersState))}
 			wasSorted={usersState.wasSorted}
+			filters={usersState.filters}
 			sortHandler={(field) => dispatch(sortUsers(field, usersState))}
 		/>
 	);

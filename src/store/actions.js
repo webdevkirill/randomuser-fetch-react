@@ -8,8 +8,7 @@ const filterUsers = (users) =>
 		img: picture.medium,
 		location,
 		age: dob.age,
-		id: cell,
-		index: idx,
+		id: idx,
 	}));
 
 export const fetchUsers = (count) => {
@@ -61,7 +60,7 @@ export const sortUsers = (field, { users, wasSorted }) => {
 				return 0;
 			});
 		} else {
-			users = users.sort((a, b) => a.index - b.index);
+			users = users.sort((a, b) => a.id - b.id);
 		}
 
 		dispatch(setUsers(users));

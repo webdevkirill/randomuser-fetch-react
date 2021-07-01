@@ -12,6 +12,7 @@ export default function TableComponent({
 	deleteUserHandler,
 	sortHandler,
 	wasSorted,
+	filters,
 }) {
 	const classes = useStyles();
 
@@ -23,6 +24,8 @@ export default function TableComponent({
 			: Math.trunc(rowsCount / countOnPage) + 1;
 
 	const maxWidth = columns.reduce((acc, col) => acc + col.width + 25, 104);
+
+	console.log(filters);
 
 	return (
 		<div className={classes.root} style={{ maxWidth }}>
