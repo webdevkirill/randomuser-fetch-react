@@ -1,4 +1,4 @@
-import { setUsers, setUsersWithCount } from './usersReducer';
+import { setUsers, setUsersWithCount, toggleWasSorted } from './usersReducer';
 
 const filterUsers = (users) =>
 	users.map(({ email, name, gender, picture, location, dob, cell }, idx) => ({
@@ -47,5 +47,24 @@ export const deleteUser = (id, { users, usersCount }) => {
 		usersCount = usersCount - 1;
 		localStorage.setItem('usersCount', usersCount);
 		dispatch(setUsersWithCount(users, usersCount));
+	};
+};
+
+export const sortUsers = (field, { users, wasSorted }) => {
+	return (dispatch) => {
+		if (!wasSorted) {
+			users = users.sort((a, b) => {
+				const aField = a[field].toLowerCase();
+				const bfield = b[field].toLowerCase();
+				if (aField < bfield) return -1;
+				if (aField > bfield) return 1;
+				return 0;
+			});
+		} else {
+			users = users.sort((a, b) => a.index - b.index);
+		}
+
+		dispatch(setUsers(users));
+		dispatch(toggleWasSorted());
 	};
 };

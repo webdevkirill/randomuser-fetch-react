@@ -1,48 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, IconButton, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Pagination from '@material-ui/lab/Pagination';
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		overflow: 'visible',
-		marginTop: 32,
-		border: '1px solid #000',
-		borderRadius: 5,
-		display: 'inline-block',
-		margin: '0 auto',
-		width: '100%',
-	},
-	scroll: {
-		overflow: 'auto',
-	},
-	header: {
-		display: 'flex',
-	},
-	column: {
-		padding: 12,
-		borderRight: '1px solid #000',
-		borderBottom: '1px solid #000',
-		display: 'flex',
-		alignItems: 'center',
-	},
-	columnIcon: {
-		padding: 2,
-	},
-	row: {
-		display: 'flex',
-	},
-	pagination: {
-		padding: 12,
-	},
-}));
+import { useStyles } from './TableClasses';
 
 export default function TableComponent({
 	columns,
 	rows,
 	countOnPage,
 	deleteUserHandler,
+	sortHandler,
+	wasSorted,
 }) {
 	const classes = useStyles();
 
@@ -62,10 +31,25 @@ export default function TableComponent({
 					{columns.map((column, idx) => (
 						<div
 							key={idx}
-							className={classes.column}
+							className={`${classes.column} ${
+								column.isSortable && classes.columnWithButton
+							}`}
 							style={{ minWidth: column.width }}
 						>
 							{column.headerName}
+							{column.isSortable && (
+								<Button
+									variant='outlined'
+									color='primary'
+									onClick={() => {
+										sortHandler(column.field);
+									}}
+								>
+									{wasSorted
+										? 'По умолчанию'
+										: 'По возрастанию'}
+								</Button>
+							)}
 						</div>
 					))}
 				</div>

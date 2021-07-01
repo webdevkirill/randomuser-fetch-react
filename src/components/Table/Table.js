@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import TableComponent from './TableComponent';
-import { deleteUser } from '../../store/actions';
+import { deleteUser, sortUsers } from '../../store/actions';
 
 export default function Table() {
 	const usersState = useSelector((state) => state.users);
@@ -19,7 +19,7 @@ export default function Table() {
 			headerName: 'Имя',
 			width: 300,
 			sortable: false,
-			isSort: true,
+			isSortable: true,
 		},
 		{ field: 'gender', headerName: 'Пол', width: 130, sortable: false },
 		{ field: 'email', headerName: 'Email', width: 250, sortable: false },
@@ -31,6 +31,8 @@ export default function Table() {
 			rows={users}
 			countOnPage={5}
 			deleteUserHandler={(id) => dispatch(deleteUser(id, usersState))}
+			wasSorted={usersState.wasSorted}
+			sortHandler={(field) => dispatch(sortUsers(field, usersState))}
 		/>
 	);
 }

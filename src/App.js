@@ -7,12 +7,10 @@ import Table from './components/Table/Table';
 
 function App() {
 	const dispatch = useDispatch();
-	const state = useSelector((state) => state);
+
 	useEffect(() => {
 		dispatch(init());
 	}, [dispatch]);
-
-	console.log(state);
 
 	return (
 		<div className='App'>

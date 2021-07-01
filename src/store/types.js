@@ -1,2 +1,3 @@
 export const SET_USERS = 'SET_USERS';
 export const SET_USERS_WITH_COUNT = 'SET_USERS_WITH_COUNT';
+export const TOGGLE_WAS_SORTED = 'TOGGLE_WAS_SORTED';

@@ -1,20 +1,21 @@
-import { SET_USERS, SET_USERS_WITH_COUNT } from './types';
+import { SET_USERS, SET_USERS_WITH_COUNT, TOGGLE_WAS_SORTED } from './types';
 
 const defaulState = {
 	users: [],
 	usersCount: null,
+	wasSorted: false,
 };
 
 const handlers = {
 	SET_USERS: (state, { payload }) => ({
 		...state,
 		users: payload,
-		featuredUsers: payload,
 	}),
 	SET_USERS_WITH_COUNT: (state, { payload }) => ({
 		...state,
 		...payload,
 	}),
+	TOGGLE_WAS_SORTED: (state) => ({ ...state, wasSorted: !state.wasSorted }),
 	default: (state, action) => state,
 };
 
@@ -31,4 +32,8 @@ export const setUsersWithCount = (users, usersCount) => ({
 export const setUsers = (users) => ({
 	type: SET_USERS,
 	payload: users,
+});
+
+export const toggleWasSorted = () => ({
+	type: TOGGLE_WAS_SORTED,
 });
