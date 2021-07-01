@@ -4,7 +4,7 @@ const filterUsers = (users) =>
 	users.map(({ email, name, gender, picture, location, dob, cell }, idx) => ({
 		email,
 		name: `${name.title} ${name.first} ${name.last}`,
-		gender,
+		gender: gender === 'male' ? 'Мужской' : 'Женский',
 		img: picture.medium,
 		location,
 		age: dob.age,
