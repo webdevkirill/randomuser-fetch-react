@@ -1,4 +1,9 @@
-import { setUsers, setUsersWithCount, toggleWasSorted } from './usersReducer';
+import {
+	setUsers,
+	setUsersWithCount,
+	toggleWasSorted,
+	setFilters,
+} from './usersReducer';
 
 const filterUsers = (users) =>
 	users.map(({ email, name, gender, picture, location, dob, cell }, idx) => ({
@@ -40,12 +45,18 @@ export const init = () => {
 	};
 };
 
-export const deleteUser = (id, { users, usersCount }) => {
+export const deleteUser = (id, { users, usersCount, filters }) => {
 	return (dispatch) => {
+		if (filters) {
+			const { email, name } = users.find((user) => user.id === id);
+			filters.name = filters.name.filter((n) => n !== name);
+			filters.email = filters.email.filter((e) => e !== email);
+		}
 		users = users.filter((user) => user.id !== id);
 		usersCount = usersCount - 1;
 		localStorage.setItem('usersCount', usersCount);
 		dispatch(setUsersWithCount(users, usersCount));
+		dispatch(setFilters(filters));
 	};
 };
 
