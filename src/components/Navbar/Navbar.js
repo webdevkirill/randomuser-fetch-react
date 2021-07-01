@@ -1,6 +1,6 @@
 import { Box, Button, Grid, makeStyles, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,9 +15,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
 	const classes = useStyles();
+	const usersStateCount = useSelector((state) => state.users.usersCount);
 	const [usersCount, setUsersCount] = useState('');
 	const [isCountError, setIsCountError] = useState('');
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		usersStateCount && setUsersCount(usersStateCount);
+	}, [usersStateCount]);
 
 	const fetchUsersButtonClickHandler = () => {
 		if (usersCount < 1) {
