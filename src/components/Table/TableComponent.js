@@ -6,6 +6,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { useStyles } from './TableClasses';
 import { useEffect } from 'react';
 import { usersWithFilters } from '../../utils';
+import UserModal from '../Modals/UserModal/UserModal';
 
 export default function TableComponent({
 	columns,
@@ -17,6 +18,9 @@ export default function TableComponent({
 	filters,
 }) {
 	const classes = useStyles();
+
+	const [openModal, setOpenModal] = useState(false);
+	const [openUser, setOpenUser] = useState({});
 
 	rows = usersWithFilters(rows, filters);
 
@@ -35,6 +39,14 @@ export default function TableComponent({
 
 	return (
 		<div className={classes.root} style={{ maxWidth }}>
+			<UserModal
+				open={openModal}
+				onClose={() => {
+					setOpenUser({});
+					setOpenModal(false);
+				}}
+				user={openUser}
+			/>
 			<div className={classes.scroll}>
 				<div className={classes.header}>
 					{columns.map((column, idx) => (
@@ -88,7 +100,13 @@ export default function TableComponent({
 								</IconButton>
 							</div>
 							<div className={classes.columnIcon}>
-								<IconButton color='primary'>
+								<IconButton
+									color='primary'
+									onClick={() => {
+										setOpenUser(row);
+										setOpenModal(true);
+									}}
+								>
 									<OpenInNewIcon />
 								</IconButton>
 							</div>

@@ -6,7 +6,7 @@ import {
 } from './usersReducer';
 
 const filterUsers = (users) =>
-	users.map(({ email, name, gender, picture, location, dob, cell }, idx) => ({
+	users.map(({ email, name, gender, picture, location, dob }, idx) => ({
 		email,
 		name: `${name.title} ${name.first} ${name.last}`,
 		gender: gender === 'male' ? 'Мужской' : 'Женский',

@@ -13,7 +13,7 @@ import {
 	Button,
 } from '@material-ui/core';
 import React, { useState } from 'react';
-import { filtersFromUsers } from '../../utils';
+import { filtersFromUsers } from '../../../utils';
 import { useStyles } from './FilterModalClasses';
 
 export default function FilterModal({ open, onClose, users }) {

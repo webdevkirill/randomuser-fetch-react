@@ -5,12 +5,7 @@ import { deleteUser, sortUsers } from '../../store/actions';
 
 export default function Table() {
 	const usersState = useSelector((state) => state.users);
-	const users = usersState.users.map(({ name, gender, email, id }) => ({
-		name,
-		gender,
-		email,
-		id,
-	}));
+	const users = usersState.users;
 	const dispatch = useDispatch();
 
 	const columns = [
