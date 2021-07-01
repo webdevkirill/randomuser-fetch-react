@@ -58,9 +58,16 @@ export default function FilterModal({ open, onClose, users }) {
 	};
 
 	const classes = useStyles();
+
+	const onCloseHandler = (val) => {
+		Object.keys(inputsHelper).forEach((key) => {
+			inputsHelper[key].handler('');
+		});
+		onClose(val);
+	};
 	return (
 		<Dialog
-			onClose={() => onClose(null)}
+			onClose={() => onCloseHandler(null)}
 			aria-labelledby='simple-dialog-title'
 			open={open}
 		>
@@ -144,7 +151,7 @@ export default function FilterModal({ open, onClose, users }) {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={() => onClose(checked)} color='primary'>
+				<Button onClick={() => onCloseHandler(checked)} color='primary'>
 					Сохранить
 				</Button>
 			</DialogActions>
