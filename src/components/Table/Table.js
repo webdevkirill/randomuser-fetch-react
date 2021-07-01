@@ -14,7 +14,13 @@ export default function Table() {
 	const dispatch = useDispatch();
 
 	const columns = [
-		{ field: 'name', headerName: 'Имя', width: 300, sortable: false },
+		{
+			field: 'name',
+			headerName: 'Имя',
+			width: 300,
+			sortable: false,
+			isSort: true,
+		},
 		{ field: 'gender', headerName: 'Пол', width: 130, sortable: false },
 		{ field: 'email', headerName: 'Email', width: 250, sortable: false },
 	];

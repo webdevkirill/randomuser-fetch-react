@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { IconButton, makeStyles } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -32,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
 	row: {
 		display: 'flex',
 	},
+	pagination: {
+		padding: 12,
+	},
 }));
 
 export default function TableComponent({
@@ -41,7 +45,13 @@ export default function TableComponent({
 	deleteUserHandler,
 }) {
 	const classes = useStyles();
+
 	const [page, setPage] = useState(1);
+	const rowsCount = rows.length;
+	const pagesCount =
+		rowsCount % countOnPage === 0
+			? rowsCount / countOnPage
+			: Math.trunc(rowsCount / countOnPage) + 1;
 
 	const maxWidth = columns.reduce((acc, col) => acc + col.width + 25, 104);
 
@@ -59,32 +69,48 @@ export default function TableComponent({
 						</div>
 					))}
 				</div>
-				{rows.map((row, idx) => (
-					<div key={idx} className={classes.row}>
-						{columns.map(({ width, field }, i) => (
-							<div
-								key={i}
-								className={classes.column}
-								style={{ minWidth: width }}
-							>
-								{row[field]}
+				{rows
+					.filter(
+						(row, idx) =>
+							idx < page * countOnPage &&
+							idx >= (page - 1) * countOnPage
+					)
+					.map((row, idx) => (
+						<div key={idx} className={classes.row}>
+							{columns.map(({ width, field }, i) => (
+								<div
+									key={i}
+									className={classes.column}
+									style={{ minWidth: width }}
+								>
+									{row[field]}
+								</div>
+							))}
+							<div className={classes.columnIcon}>
+								<IconButton
+									color='secondary'
+									onClick={() => deleteUserHandler(row.id)}
+								>
+									<DeleteIcon />
+								</IconButton>
 							</div>
-						))}
-						<div className={classes.columnIcon}>
-							<IconButton
-								color='secondary'
-								onClick={() => deleteUserHandler(row.id)}
-							>
-								<DeleteIcon />
-							</IconButton>
+							<div className={classes.columnIcon}>
+								<IconButton color='primary'>
+									<OpenInNewIcon />
+								</IconButton>
+							</div>
 						</div>
-						<div className={classes.columnIcon}>
-							<IconButton color='primary'>
-								<OpenInNewIcon />
-							</IconButton>
-						</div>
-					</div>
-				))}
+					))}
+			</div>
+			<div className={classes.pagination}>
+				<Typography>Страница: {page}</Typography>
+				<Pagination
+					count={pagesCount}
+					page={page}
+					onChange={(event, value) => {
+						setPage(value);
+					}}
+				/>
 			</div>
 		</div>
 	);
