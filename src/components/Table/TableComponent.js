@@ -34,7 +34,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function TableComponent({ columns, rows, countOnPage }) {
+export default function TableComponent({
+	columns,
+	rows,
+	countOnPage,
+	deleteUserHandler,
+}) {
 	const classes = useStyles();
 	const [page, setPage] = useState(1);
 
@@ -66,7 +71,10 @@ export default function TableComponent({ columns, rows, countOnPage }) {
 							</div>
 						))}
 						<div className={classes.columnIcon}>
-							<IconButton color='secondary'>
+							<IconButton
+								color='secondary'
+								onClick={() => deleteUserHandler(row.id)}
+							>
 								<DeleteIcon />
 							</IconButton>
 						</div>

@@ -43,8 +43,9 @@ export const init = () => {
 
 export const deleteUser = (id, { users, usersCount }) => {
 	return (dispatch) => {
-		users = users.filter((user) => user.index !== id);
+		users = users.filter((user) => user.id !== id);
 		usersCount = usersCount - 1;
+		localStorage.setItem('usersCount', usersCount);
 		dispatch(setUsersWithCount(users, usersCount));
 	};
 };

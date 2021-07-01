@@ -1,11 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import TableComponent from './TableComponent';
+import { deleteUser } from '../../store/actions';
 
 export default function Table() {
-	const users = useSelector((state) => state.users.users).map(
-		({ name, gender, email, id }) => ({ name, gender, email, id })
-	);
+	const usersState = useSelector((state) => state.users);
+	const users = usersState.users.map(({ name, gender, email, id }) => ({
+		name,
+		gender,
+		email,
+		id,
+	}));
+	const dispatch = useDispatch();
 
 	const columns = [
 		{ field: 'name', headerName: 'Имя', width: 300, sortable: false },
@@ -13,5 +19,12 @@ export default function Table() {
 		{ field: 'email', headerName: 'Email', width: 250, sortable: false },
 	];
 
-	return <TableComponent columns={columns} rows={users} countOnPage={5} />;
+	return (
+		<TableComponent
+			columns={columns}
+			rows={users}
+			countOnPage={5}
+			deleteUserHandler={(id) => dispatch(deleteUser(id, usersState))}
+		/>
+	);
 }
