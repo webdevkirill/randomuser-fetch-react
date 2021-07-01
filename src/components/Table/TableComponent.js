@@ -4,6 +4,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Pagination from '@material-ui/lab/Pagination';
 import { useStyles } from './TableClasses';
+import { useEffect } from 'react';
+import { usersWithFilters } from '../../utils';
 
 export default function TableComponent({
 	columns,
@@ -16,6 +18,8 @@ export default function TableComponent({
 }) {
 	const classes = useStyles();
 
+	rows = usersWithFilters(rows, filters);
+
 	const [page, setPage] = useState(1);
 	const rowsCount = rows.length;
 	const pagesCount =
@@ -25,7 +29,9 @@ export default function TableComponent({
 
 	const maxWidth = columns.reduce((acc, col) => acc + col.width + 25, 104);
 
-	console.log(filters);
+	useEffect(() => {
+		setPage(1);
+	}, [filters]);
 
 	return (
 		<div className={classes.root} style={{ maxWidth }}>

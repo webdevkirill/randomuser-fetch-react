@@ -41,7 +41,6 @@ export default function Navbar() {
 	};
 
 	const modalCloseHandler = (filters) => {
-		console.log(filters);
 		filters && dispatch(setFilters(filters));
 		setFilterModalOpen(false);
 	};

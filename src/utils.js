@@ -24,3 +24,20 @@ export const filtersFromUsers = (users) =>
 			},
 		}
 	);
+
+export const usersWithFilters = (users, filters) => {
+	if (!filters) return users;
+
+	return users.filter((user) => {
+		let isFiltered = false;
+		Object.keys(filters).map((filter) => {
+			if (
+				filters[filter].length &&
+				filters[filter].indexOf(user[filter]) === -1
+			) {
+				isFiltered = true;
+			}
+		});
+		return !isFiltered;
+	});
+};
